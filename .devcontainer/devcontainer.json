@@ -1,11 +1,17 @@
 {
   "name": "msensor-webrenderer",
-  "image": "node:24",
+  "build": {
+	"dockerfile": "Dockerfile"
+  },
   "customizations": {
     "vscode": {
       "extensions": ["ms-vscode.vscode-typescript-next"]
     }
-  }
+  },
+
+  "mounts": [
+    "source=msensor-webrenderer-app-cache,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ]
 
   // 👇 Features to add to the Dev Container. More info: https://containers.dev/implementors/features.
 
