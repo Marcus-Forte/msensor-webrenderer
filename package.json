@@ -1,0 +1,30 @@
+{
+  "name": "msensor-webrenderer",
+  "version": "1.0.0",
+  "description": "This repository hosts an application that subscribes to a point-cloud LiDAR stream via gRPC and render the points over the web.",
+  "homepage": "https://github.com/Marcus-Forte/msensor-webrenderer#readme",
+  "bugs": {
+    "url": "https://github.com/Marcus-Forte/msensor-webrenderer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marcus-Forte/msensor-webrenderer.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "format": "prettier --write .",
+    "dev": "parcel index.html",
+    "build": "tsc && parcel build index.html",
+    "serve": "serve dist"
+  },
+  "dependencies": {
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.176.0",
+    "parcel": "^2.15.2",
+    "serve": "^14.2.4",
+    "typescript": "^5.8.3"
+  }
+}
