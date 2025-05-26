@@ -19,5 +19,4 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
     fi
 
 # install protoc-gen-js globally and dependencies
-RUN npm install -g protoc-gen-js && \
-    npm install 
+RUN npm install -g protoc-gen-js

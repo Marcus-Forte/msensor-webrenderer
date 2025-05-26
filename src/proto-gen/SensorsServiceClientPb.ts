@@ -10,26 +10,25 @@
 // 	protoc              v3.21.12
 // source: sensors.proto
 
-
 /* eslint-disable */
 // @ts-nocheck
-
 
 import * as grpcWeb from 'grpc-web';
 
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb'; // proto import: "google/protobuf/empty.proto"
 import * as sensors_pb from './sensors_pb'; // proto import: "sensors.proto"
 
-
 export class SensorServiceClient {
   client_: grpcWeb.AbstractClientBase;
   hostname_: string;
-  credentials_: null | { [index: string]: string; };
-  options_: null | { [index: string]: any; };
+  credentials_: null | { [index: string]: string };
+  options_: null | { [index: string]: any };
 
-  constructor (hostname: string,
-               credentials?: null | { [index: string]: string; },
-               options?: null | { [index: string]: any; }) {
+  constructor(
+    hostname: string,
+    credentials?: null | { [index: string]: string },
+    options?: null | { [index: string]: any },
+  ) {
     if (!options) options = {};
     if (!credentials) credentials = {};
     options['format'] = 'text';
@@ -48,18 +47,19 @@ export class SensorServiceClient {
     (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
-    sensors_pb.PointCloud3.deserializeBinary
+    sensors_pb.PointCloud3.deserializeBinary,
   );
 
   getScan(
     request: google_protobuf_empty_pb.Empty,
-    metadata?: grpcWeb.Metadata): grpcWeb.ClientReadableStream<sensors_pb.PointCloud3> {
+    metadata?: grpcWeb.Metadata,
+  ): grpcWeb.ClientReadableStream<sensors_pb.PointCloud3> {
     return this.client_.serverStreaming(
-      this.hostname_ +
-        '/sensors.SensorService/getScan',
+      this.hostname_ + '/sensors.SensorService/getScan',
       request,
       metadata || {},
-      this.methodDescriptorgetScan);
+      this.methodDescriptorgetScan,
+    );
   }
 
   methodDescriptorgetImu = new grpcWeb.MethodDescriptor(
@@ -70,18 +70,19 @@ export class SensorServiceClient {
     (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
-    sensors_pb.IMUData.deserializeBinary
+    sensors_pb.IMUData.deserializeBinary,
   );
 
   getImu(
     request: google_protobuf_empty_pb.Empty,
-    metadata?: grpcWeb.Metadata): grpcWeb.ClientReadableStream<sensors_pb.IMUData> {
+    metadata?: grpcWeb.Metadata,
+  ): grpcWeb.ClientReadableStream<sensors_pb.IMUData> {
     return this.client_.serverStreaming(
-      this.hostname_ +
-        '/sensors.SensorService/getImu',
+      this.hostname_ + '/sensors.SensorService/getImu',
       request,
       metadata || {},
-      this.methodDescriptorgetImu);
+      this.methodDescriptorgetImu,
+    );
   }
 
   methodDescriptorsavePLYScan = new grpcWeb.MethodDescriptor(
@@ -92,40 +93,39 @@ export class SensorServiceClient {
     (request: sensors_pb.saveFileRequest) => {
       return request.serializeBinary();
     },
-    google_protobuf_empty_pb.Empty.deserializeBinary
+    google_protobuf_empty_pb.Empty.deserializeBinary,
   );
 
   savePLYScan(
     request: sensors_pb.saveFileRequest,
-    metadata?: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+    metadata?: grpcWeb.Metadata | null,
+  ): Promise<google_protobuf_empty_pb.Empty>;
 
   savePLYScan(
     request: sensors_pb.saveFileRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.RpcError,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+    callback: (err: grpcWeb.RpcError, response: google_protobuf_empty_pb.Empty) => void,
+  ): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   savePLYScan(
     request: sensors_pb.saveFileRequest,
     metadata?: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.RpcError,
-               response: google_protobuf_empty_pb.Empty) => void) {
+    callback?: (err: grpcWeb.RpcError, response: google_protobuf_empty_pb.Empty) => void,
+  ) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
-        this.hostname_ +
-          '/sensors.SensorService/savePLYScan',
+        this.hostname_ + '/sensors.SensorService/savePLYScan',
         request,
         metadata || {},
         this.methodDescriptorsavePLYScan,
-        callback);
+        callback,
+      );
     }
     return this.client_.unaryCall(
-    this.hostname_ +
-      '/sensors.SensorService/savePLYScan',
-    request,
-    metadata || {},
-    this.methodDescriptorsavePLYScan);
+      this.hostname_ + '/sensors.SensorService/savePLYScan',
+      request,
+      metadata || {},
+      this.methodDescriptorsavePLYScan,
+    );
   }
-
 }
-

@@ -1,7 +1,6 @@
-import * as jspb from 'google-protobuf'
+import * as jspb from 'google-protobuf';
 
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb'; // proto import: "google/protobuf/empty.proto"
-
 
 export class Point3 extends jspb.Message {
   getX(): number;
@@ -43,31 +42,31 @@ export class Point3 extends jspb.Message {
 
 export namespace Point3 {
   export type AsObject = {
-    x: number,
-    y: number,
-    z: number,
-    r?: number,
-    g?: number,
-    b?: number,
-    intensity?: number,
-  }
+    x: number;
+    y: number;
+    z: number;
+    r?: number;
+    g?: number;
+    b?: number;
+    intensity?: number;
+  };
 
-  export enum RCase { 
+  export enum RCase {
     _R_NOT_SET = 0,
     R = 4,
   }
 
-  export enum GCase { 
+  export enum GCase {
     _G_NOT_SET = 0,
     G = 5,
   }
 
-  export enum BCase { 
+  export enum BCase {
     _B_NOT_SET = 0,
     B = 6,
   }
 
-  export enum IntensityCase { 
+  export enum IntensityCase {
     _INTENSITY_NOT_SET = 0,
     INTENSITY = 7,
   }
@@ -94,11 +93,11 @@ export class PointCloud3 extends jspb.Message {
 
 export namespace PointCloud3 {
   export type AsObject = {
-    pointsList: Array<Point3.AsObject>,
-    timestamp?: number,
-  }
+    pointsList: Array<Point3.AsObject>;
+    timestamp?: number;
+  };
 
-  export enum TimestampCase { 
+  export enum TimestampCase {
     _TIMESTAMP_NOT_SET = 0,
     TIMESTAMP = 2,
   }
@@ -138,16 +137,16 @@ export class IMUData extends jspb.Message {
 
 export namespace IMUData {
   export type AsObject = {
-    ax: number,
-    ay: number,
-    az: number,
-    gx: number,
-    gy: number,
-    gz: number,
-    timestamp?: number,
-  }
+    ax: number;
+    ay: number;
+    az: number;
+    gx: number;
+    gy: number;
+    gz: number;
+    timestamp?: number;
+  };
 
-  export enum TimestampCase { 
+  export enum TimestampCase {
     _TIMESTAMP_NOT_SET = 0,
     TIMESTAMP = 7,
   }
@@ -171,16 +170,19 @@ export class RecordingEntry extends jspb.Message {
   static toObject(includeInstance: boolean, msg: RecordingEntry): RecordingEntry.AsObject;
   static serializeBinaryToWriter(message: RecordingEntry, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): RecordingEntry;
-  static deserializeBinaryFromReader(message: RecordingEntry, reader: jspb.BinaryReader): RecordingEntry;
+  static deserializeBinaryFromReader(
+    message: RecordingEntry,
+    reader: jspb.BinaryReader,
+  ): RecordingEntry;
 }
 
 export namespace RecordingEntry {
   export type AsObject = {
-    scan?: PointCloud3.AsObject,
-    imu?: IMUData.AsObject,
-  }
+    scan?: PointCloud3.AsObject;
+    imu?: IMUData.AsObject;
+  };
 
-  export enum EntryCase { 
+  export enum EntryCase {
     ENTRY_NOT_SET = 0,
     SCAN = 1,
     IMU = 2,
@@ -198,17 +200,19 @@ export class saveFileRequest extends jspb.Message {
   static toObject(includeInstance: boolean, msg: saveFileRequest): saveFileRequest.AsObject;
   static serializeBinaryToWriter(message: saveFileRequest, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): saveFileRequest;
-  static deserializeBinaryFromReader(message: saveFileRequest, reader: jspb.BinaryReader): saveFileRequest;
+  static deserializeBinaryFromReader(
+    message: saveFileRequest,
+    reader: jspb.BinaryReader,
+  ): saveFileRequest;
 }
 
 export namespace saveFileRequest {
   export type AsObject = {
-    filename?: string,
-  }
+    filename?: string;
+  };
 
-  export enum FilenameCase { 
+  export enum FilenameCase {
     _FILENAME_NOT_SET = 0,
     FILENAME = 1,
   }
 }
-

@@ -1,7 +1,7 @@
 {
   "name": "msensor-webrenderer",
   "build": {
-	"dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile"
   },
   "customizations": {
     "vscode": {
@@ -11,12 +11,12 @@
 
   "mounts": [
     "source=msensor-webrenderer-app-cache,target=${containerWorkspaceFolder}/node_modules,type=volume"
-  ]
+  ],
 
   // 👇 Features to add to the Dev Container. More info: https://containers.dev/implementors/features.
 
   // 👇 Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
+  "forwardPorts": [1234],
 
   // 👇 Configure tool-specific properties.
   // "customizations": {},
