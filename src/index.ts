@@ -32,15 +32,14 @@ window.addEventListener('keydown', (event) => {
   // Reset camera to origin on 'r'
   if (key === 'r') {
     camera.position.set(0, 0, 5);
-    
+
     yaw = 0;
-    pitch
+    pitch;
   }
 });
 window.addEventListener('keyup', (event) => {
   keysPressed[event.key.toLowerCase()] = false;
 });
-
 
 // Mouse processing
 
@@ -84,7 +83,7 @@ renderer.domElement.addEventListener('mousemove', (event) => {
 //
 
 function animate() {
-camera.rotation.order = 'YXZ';
+  camera.rotation.order = 'YXZ';
   camera.rotation.y = yaw;
   camera.rotation.x = pitch;
   camera.up.set(0, 0, 1); // World Z is up
@@ -97,8 +96,6 @@ camera.rotation.order = 'YXZ';
   const worldUp = new THREE.Vector3(0, 0, 1);
   const right = new THREE.Vector3();
   right.crossVectors(forward, worldUp).normalize();
-
-
 
   // Fly camera: move in the direction camera is facing (including up/down)
   if (keysPressed['w'] || keysPressed['arrowup']) {
@@ -115,8 +112,6 @@ camera.rotation.order = 'YXZ';
   }
   if (keysPressed['q']) camera.position.z += moveSpeed;
   if (keysPressed['e']) camera.position.z -= moveSpeed;
-
-
 
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
@@ -155,29 +150,26 @@ client
         colors[i * 3 + 1] = 1.0;
         colors[i * 3 + 2] = 0;
       }
-  
-
 
       // Use r/g/b if available, otherwise default to white
-    
 
       const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    // Create material for points
-    const material = new THREE.PointsMaterial({ size: 0.05, vertexColors: true });
+      // Create material for points
+      const material = new THREE.PointsMaterial({ size: 0.05, vertexColors: true });
 
-    // Create Points object and add to scene
-    const pointCloud = new THREE.Points(geometry, material);
-    scene.add(pointCloud);
+      // Create Points object and add to scene
+      const pointCloud = new THREE.Points(geometry, material);
+      scene.add(pointCloud);
 
-    scene.remove(previousPointCloud);
-    previousPointCloud = pointCloud;
+      scene.remove(previousPointCloud);
+      previousPointCloud = pointCloud;
 
-    // Here you can add the points to a THREE.js geometry if needed
-    // For example, you could create a new geometry and add these points to it
-  });
+      // Here you can add the points to a THREE.js geometry if needed
+      // For example, you could create a new geometry and add these points to it
+    });
   })
   .on('error', (err) => {
     console.error('Error receiving scan data:', err);

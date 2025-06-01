@@ -57,8 +57,8 @@ export function Int2RGB(intensity: number): RGB {
   const rgb = getRainbowColor(norm_i);
   // console.log(rgb)
   return {
-    r: rgb.r ,
-    g: rgb.g ,
+    r: rgb.r,
+    g: rgb.g,
     b: rgb.b,
   };
 }
