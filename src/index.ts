@@ -4,15 +4,15 @@ import { SensorServiceClient } from './proto-gen/SensorsServiceClientPb';
 import { PointCloud3 } from './proto-gen/sensors_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { Int2RGB } from './colormap';
-import { FlyControls } from 'three/examples/jsm/controls/FlyControls'
-
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
 
 function ResetCamera(camera: THREE.PerspectiveCamera) {
-// camera.position.set(-c.5, 0, 0); // Adjust camera rotation to look at the scene
+  // camera.position.set(-0, -5, 2); // Adjust camera rotation to look at the scene
+  // camera.rotation.set(1.5, 0, 0); // Adjust camera rotation to look at the scene
 
-// good viewpoint
-camera.position.set(5.94, 0.966, 3.41); // Adjust camera position
-camera.rotation.set(0.60, 1.036, 0.97)
+  // good viewpoint
+  camera.position.set(5.94, 0.966, 3.41); // Adjust camera position
+  camera.rotation.set(0.6, 1.036, 0.97);
 }
 
 const scene = new THREE.Scene();
@@ -86,29 +86,28 @@ client
         colors[i * 3 + 1] = 1.0;
         colors[i * 3 + 2] = 0;
       }
-
-
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-      // Create material for points
-      const material = new THREE.PointsMaterial({ size: 0.05, vertexColors: true });
-
-      // Create Points object and add to scene
-      const pointCloud = new THREE.Points(geometry, material);
-      scene.add(pointCloud);
-      if (previousPointCloud) {
-        scene.remove(previousPointCloud);
-        // Dispose old geometry and material to free memory
-        previousPointCloud.geometry.dispose();
-        (previousPointCloud.material as THREE.Material).dispose();
-      }
-      previousPointCloud = pointCloud;
-
-      // Here you can add the points to a THREE.js geometry if needed
-      // For example, you could create a new geometry and add these points to it
     });
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    // Create material for points
+    const material = new THREE.PointsMaterial({ size: 0.02, vertexColors: true });
+
+    // Create Points object and add to scene
+    const pointCloud = new THREE.Points(geometry, material);
+    scene.add(pointCloud);
+    if (previousPointCloud) {
+      scene.remove(previousPointCloud);
+      // Dispose old geometry and material to free memory
+      previousPointCloud.geometry.dispose();
+      (previousPointCloud.material as THREE.Material).dispose();
+    }
+    previousPointCloud = pointCloud;
+
+    // Here you can add the points to a THREE.js geometry if needed
+    // For example, you could create a new geometry and add these points to it
   })
   .on('error', (err) => {
     console.error('Error receiving scan data:', err);
