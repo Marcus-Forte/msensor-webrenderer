@@ -4,20 +4,28 @@ import { SensorServiceClient } from './proto-gen/SensorsServiceClientPb';
 import { PointCloud3 } from './proto-gen/sensors_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { Int2RGB } from './colormap';
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls'
 
-const axesHelper = new THREE.AxesHelper(1);
+
+function ResetCamera(camera: THREE.PerspectiveCamera) {
+// camera.position.set(-c.5, 0, 0); // Adjust camera rotation to look at the scene
+
+// good viewpoint
+camera.position.set(5.94, 0.966, 3.41); // Adjust camera position
+camera.rotation.set(0.60, 1.036, 0.97)
+}
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+const axesHelper = new THREE.AxesHelper();
 scene.add(axesHelper);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-
-const moveSpeed = 0.1; // Lowered for smoother movement
-
-// Track pressed keys
-const keysPressed: { [key: string]: boolean } = {};
+const controls = new FlyControls(camera, renderer.domElement);
+controls.dragToLook = true; // Enable drag to look
+controls.rollSpeed = 0.08; // Adjust roll speed
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -26,92 +34,20 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('keydown', (event) => {
-  const key = event.key.toLowerCase();
-  keysPressed[key] = true;
+  if (event.key.toLocaleLowerCase() === 'o') {
+    ResetCamera(camera);
+  }
 
-  // Reset camera to origin on 'r'
-  if (key === 'r') {
-    camera.position.set(0, 0, 5);
-
-    yaw = 0;
-    pitch;
+  if (event.key.toLocaleLowerCase() === 'c') {
+    console.log('Camera position:', camera.position);
+    console.log('Camera rotation:', camera.rotation);
   }
 });
-window.addEventListener('keyup', (event) => {
-  keysPressed[event.key.toLowerCase()] = false;
-});
 
-// Mouse processing
-
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-let yaw = 0;
-let pitch = 0;
-
-// Set initial camera position and rotation
-camera.position.set(-1, -1, 5);
-camera.rotation.order = 'YXZ'; // Yaw (Y), Pitch (X), Roll (Z)
-camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-renderer.domElement.addEventListener('mousedown', (event) => {
-  isDragging = true;
-  previousMousePosition.x = event.clientX;
-  previousMousePosition.y = event.clientY;
-});
-
-renderer.domElement.addEventListener('mouseup', () => {
-  isDragging = false;
-});
-
-renderer.domElement.addEventListener('mousemove', (event) => {
-  const dragRate = 0.003;
-  if (!isDragging) return;
-
-  const deltaMove = {
-    x: event.clientX - previousMousePosition.x,
-    y: event.clientY - previousMousePosition.y,
-  };
-
-  yaw += deltaMove.x * dragRate;
-  pitch += deltaMove.y * dragRate;
-  pitch = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, pitch)); // clamp pitch
-
-  previousMousePosition.x = event.clientX;
-  previousMousePosition.y = event.clientY;
-});
-
-//
+ResetCamera(camera);
 
 function animate() {
-  camera.rotation.order = 'YXZ';
-  camera.rotation.y = yaw;
-  camera.rotation.x = pitch;
-  camera.up.set(0, 0, 1); // World Z is up
-
-  // Get forward and right vectors relative to camera orientation (Z-up)
-  const forward = new THREE.Vector3();
-  camera.getWorldDirection(forward);
-
-  // Right vector: cross product of up and forward
-  const worldUp = new THREE.Vector3(0, 0, 1);
-  const right = new THREE.Vector3();
-  right.crossVectors(forward, worldUp).normalize();
-
-  // Fly camera: move in the direction camera is facing (including up/down)
-  if (keysPressed['w'] || keysPressed['arrowup']) {
-    camera.position.add(forward.clone().multiplyScalar(moveSpeed));
-  }
-  if (keysPressed['s'] || keysPressed['arrowdown']) {
-    camera.position.add(forward.clone().multiplyScalar(-moveSpeed));
-  }
-  if (keysPressed['a'] || keysPressed['arrowleft']) {
-    camera.position.add(right.clone().multiplyScalar(-moveSpeed));
-  }
-  if (keysPressed['d'] || keysPressed['arrowright']) {
-    camera.position.add(right.clone().multiplyScalar(moveSpeed));
-  }
-  if (keysPressed['q']) camera.position.z += moveSpeed;
-  if (keysPressed['e']) camera.position.z -= moveSpeed;
+  controls.update(0.1); // Update controls with a small delta time
 
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
@@ -131,7 +67,7 @@ client
   .getScan(request)
   .on('data', (response: PointCloud3) => {
     const points = response.getPointsList();
-    console.log('Got pts:{}', points.length);
+    // console.log('Got pts:{}', points.length);
     const positions = new Float32Array(points.length * 3);
     const colors = new Float32Array(points.length * 3);
     // process all points
@@ -151,7 +87,6 @@ client
         colors[i * 3 + 2] = 0;
       }
 
-      // Use r/g/b if available, otherwise default to white
 
       const geometry = new THREE.BufferGeometry();
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -163,8 +98,12 @@ client
       // Create Points object and add to scene
       const pointCloud = new THREE.Points(geometry, material);
       scene.add(pointCloud);
-
-      scene.remove(previousPointCloud);
+      if (previousPointCloud) {
+        scene.remove(previousPointCloud);
+        // Dispose old geometry and material to free memory
+        previousPointCloud.geometry.dispose();
+        (previousPointCloud.material as THREE.Material).dispose();
+      }
       previousPointCloud = pointCloud;
 
       // Here you can add the points to a THREE.js geometry if needed
